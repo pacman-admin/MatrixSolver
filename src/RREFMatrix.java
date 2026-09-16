@@ -6,16 +6,17 @@ public class RREFMatrix extends Matrix {
     }
 
     public static RREFMatrix from(Matrix A) {
+        double[][] array = A.getArray();
         int numRows = A.getRowDimension();
         int numCols = A.getColumnDimension();
         int lead = 0;
-        double[][] array = A.getArray();
 
         for (int r = 0; r < numRows; r++) {
             if (numCols <= lead) break;
-            int i;
-            for (i = r; Math.abs(array[i][lead]) < 1e-10; i++) {
+            int i = r;
 
+            while (Math.abs(array[i][lead]) < 1e-10) {
+                i++;
                 if (numRows == i) {
                     i = r;
                     lead++;
