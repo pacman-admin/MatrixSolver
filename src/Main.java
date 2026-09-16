@@ -1,8 +1,6 @@
 import Jama.Matrix;
 
 static Matrix getMatrixFromInput() {
-//    IO.println("Enter matrix data, press Ctrl+D when done.");
-//    IO.println("Add a newline after each row, including the last one");
     try {
         int rows = Integer.parseInt(IO.readln("How many rows does the matrix have?"));
         List<double[]> data = new ArrayList<>();
@@ -18,8 +16,6 @@ static Matrix getMatrixFromInput() {
 
 void main() {
     for (; ; ) {
-//        Matrix m = getMatrixFromInput();
-//        m.print(3, 0);
         RREFMatrix.from(getMatrixFromInput()).removeNegativeZeros().print(3, 2);
     }
 }
