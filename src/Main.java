@@ -27,7 +27,7 @@ static Matrix getMatrixFromInput() {
     } catch (Throwable e) {
         IO.println("Cannot process input: " + e.getMessage());
     }
-    return Matrix.identity(3, 4);
+    return Matrix.identity(3, 3);
 }
 
 void main() {
