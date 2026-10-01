@@ -21,6 +21,7 @@ public class RREFMatrix extends Matrix {
         super(doubles);
     }
 
+    //This method was made by Google AI
     public static RREFMatrix from(Matrix A) {
         double[][] array = A.getArray();
         int numRows = A.getRowDimension();
@@ -68,6 +69,7 @@ public class RREFMatrix extends Matrix {
         return new RREFMatrix(array);
     }
 
+    //This method was made by Google AI
     public static Matrix removeNegativeZeros(Matrix A) {
         for (int i = 0; i < A.getRowDimension(); i++) {
             for (int j = 0; j < A.getColumnDimension(); j++) {
