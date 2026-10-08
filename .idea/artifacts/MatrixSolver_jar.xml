@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="MatrixSolver:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/MatrixSolver_jar</output-path>
+    <root id="archive" name="MatrixSolver.jar">
+      <element id="module-output" name="MatrixSolver" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/Jama-1.0.3.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
