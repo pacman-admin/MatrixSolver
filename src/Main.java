@@ -31,7 +31,7 @@ static Matrix getMatrixFromInput() {
 }
 
 void main() {
-    for (; ; ) {
+//    for (; ; ) {
         RREFMatrix.from(getMatrixFromInput()).removeNegativeZeros().print(3, 2);
-    }
+//    }
 }

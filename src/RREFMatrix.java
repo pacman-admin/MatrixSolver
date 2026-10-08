@@ -17,7 +17,7 @@
 import Jama.Matrix;
 
 public class RREFMatrix extends Matrix {
-    private RREFMatrix(double[][] doubles) {
+    protected RREFMatrix(double[][] doubles) {
         super(doubles);
     }
 
