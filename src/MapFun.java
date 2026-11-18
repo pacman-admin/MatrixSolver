@@ -15,7 +15,7 @@ import java.util.*;
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-public class MapFun{
+public class MapFun {
     static <V> Collection<V> addTo(Collection<V> a, Collection<V> b) {
         ArrayList<V> l = new ArrayList<>(a);
         l.addAll(b);
@@ -26,14 +26,17 @@ public class MapFun{
         Map<Object, Collection<Object>> m = new HashMap<>();
         a.forEach((k, v) -> m.merge(k, new ArrayList<>(v), MapFun::addTo));
         b.forEach((k, v) -> m.merge(k, new ArrayList<>(v), MapFun::addTo));
-//    a.forEach((k, _) -> m.put(k, new ArrayList<>()));
-//    b.forEach((k, _) -> m.put(k, new ArrayList<>()));
-//    a.forEach((k, v) -> m.get(k).addAll(v));
-//    b.forEach((k, v) -> m.get(k).addAll(v));
+        return m;
+    }
+    static Map<Object, Collection<Object>> combine(Map<Object, Collection<Object>>... what) {
+        Map<Object, Collection<Object>> m = new HashMap<>();
+        for (var map : what)
+            map.forEach((k, v) -> m.merge(k, new ArrayList<>(v), MapFun::addTo));
         return m;
     }
 
     void main() {
+        List.of();
         Map<Object, Collection<Object>> d1 = new HashMap<>();
         Map<Object, Collection<Object>> d2 = new HashMap<>();
         d1.put(1, Arrays.asList(1, 2, 4));
