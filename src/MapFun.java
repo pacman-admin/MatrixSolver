@@ -16,27 +16,20 @@ import java.util.*;
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 public class MapFun {
-    static <V> Collection<V> addTo(Collection<V> a, Collection<V> b) {
+    public static <V> Collection<V> addTo(Collection<V> a, Collection<V> b) {
         ArrayList<V> l = new ArrayList<>(a);
         l.addAll(b);
         return l;
     }
 
-    static Map<Object, Collection<Object>> combine(Map<Object, Collection<Object>> a, Map<Object, Collection<Object>> b) {
+    public static Map<Object, Collection<Object>> combine(Map<Object, Collection<Object>>... which) {
         Map<Object, Collection<Object>> m = new HashMap<>();
-        a.forEach((k, v) -> m.merge(k, new ArrayList<>(v), MapFun::addTo));
-        b.forEach((k, v) -> m.merge(k, new ArrayList<>(v), MapFun::addTo));
-        return m;
-    }
-    static Map<Object, Collection<Object>> combine(Map<Object, Collection<Object>>... what) {
-        Map<Object, Collection<Object>> m = new HashMap<>();
-        for (var map : what)
-            map.forEach((k, v) -> m.merge(k, new ArrayList<>(v), MapFun::addTo));
+        for (Map<Object, Collection<Object>> a : which)
+            a.forEach((k, v) -> m.merge(k, new ArrayList<>(v), MapFun::addTo));
         return m;
     }
 
     void main() {
-        List.of();
         Map<Object, Collection<Object>> d1 = new HashMap<>();
         Map<Object, Collection<Object>> d2 = new HashMap<>();
         d1.put(1, Arrays.asList(1, 2, 4));
