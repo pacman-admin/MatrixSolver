@@ -15,7 +15,6 @@
  */
 
 import Jama.Matrix;
-
 static Matrix getMatrixFromInput() {
     try {
         int rows = Integer.parseInt(IO.readln("How many rows does the matrix have?"));
