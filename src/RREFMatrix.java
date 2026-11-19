@@ -85,6 +85,7 @@ public class RREFMatrix extends Matrix {
     }
 
     public RREFMatrix clearTinyValues(final double tol) {
+        if (tol >= 1) throw new IllegalArgumentException("Tolerance must be less than 1!");
         double[][] a = getArrayCopy();
         for (double[] row : a)
             for (int j = 0; j < getColumnDimension(); j++)
