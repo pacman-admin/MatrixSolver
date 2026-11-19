@@ -31,9 +31,5 @@ static Matrix getMatrixFromInput() {
 }
 
 void main() {
-    RREFMatrix.from(getMatrixFromInput()).removeNegativeZeros().print(3, 2);
-    double a = -0.0;
-    IO.println(a);
-    a += 0.0;
-    IO.println(a);
+    RREFMatrix.from(getMatrixFromInput()).print(3, 2);
 }

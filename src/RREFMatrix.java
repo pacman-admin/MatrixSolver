@@ -16,72 +16,79 @@
 
 import Jama.Matrix;
 
+/**
+ * A matrix in reduced row echelon form, built via {@link #from(Matrix)}.
+ * Note: the RREF guarantee holds only until the matrix is mutated
+ * (e.g. via set(...) or getArray()).
+ */
 public class RREFMatrix extends Matrix {
     private RREFMatrix(double[][] doubles) {
         super(doubles);
     }
 
-    //This method was made by Google AI
+    //Made by Claude.ai
     public static RREFMatrix from(Matrix A) {
-        double[][] array = A.getArrayCopy();
-        int numRows = A.getRowDimension();
-        int numCols = A.getColumnDimension();
-        int lead = 0;
-
-        for (int r = 0; r < numRows; r++) {
-            if (numCols <= lead) break;
-            int i = r;
-
-            while (Math.abs(array[i][lead]) < 1e-10) {
-                i++;
-                if (numRows == i) {
-                    i = r;
-                    lead++;
-                    if (numCols == lead) break;
-                }
-            }
-            if (numCols <= lead) break;
-
-            // Swap rows
-            double[] temp = array[r];
-            array[r] = array[i];
-            array[i] = temp;
-
-            // Scale pivot row
-            double pivot = array[r][lead];
-            if (Math.abs(pivot) > 1e-10) {
-                for (int j = 0; j < numCols; j++) {
-                    array[r][j] /= pivot;
-                }
-            }
-
-            // Eliminate other rows
-            for (int k = 0; k < numRows; k++) {
-                if (k != r) {
-                    double factor = array[k][lead];
-                    for (int j = 0; j < numCols; j++) {
-                        array[k][j] -= factor * array[r][j];
-                    }
-                }
-            }
-            lead++;
-        }
-        return new RREFMatrix(array);
+        // Relative tolerance: scales with the data instead of a fixed 1e-10.
+        int m = A.getRowDimension(), n = A.getColumnDimension();
+        double tol = Math.max(m, n) * Math.ulp(A.normInf());
+        return from(A, tol);
     }
 
-    //This method was made by Google AI
-    public static Matrix removeNegativeZeros(Matrix A) {
-        for (int i = 0; i < A.getRowDimension(); i++) {
-            for (int j = 0; j < A.getColumnDimension(); j++) {
-                if (Double.compare(A.getArray()[i][j], -0.0) == 0) {
-                    A.getArray()[i][j] = 0.0;
+    //Made by Claude.ai
+    public static RREFMatrix from(Matrix A, double tol) {
+        final int rows = A.getRowDimension();
+        final int cols = A.getColumnDimension();
+        final double[][] a = A.getArrayCopy();   // input is never mutated
+        int r = 0;
+
+        for (int c = 0; c < cols && r < rows; c++) {
+            // Partial pivoting: largest magnitude in this column.
+            int best = r;
+            double max = Math.abs(a[r][c]);
+            for (int i = r + 1; i < rows; i++) {
+                double v = Math.abs(a[i][c]);
+                if (v > max) {
+                    max = v;
+                    best = i;
                 }
             }
+            if (max <= tol) {
+                for (int i = r; i < rows; i++) a[i][c] = 0.0;   // clean noise
+                continue;
+            }
+
+            double[] pr = a[best];
+            a[best] = a[r];
+            a[r] = pr;
+
+            // Scale the pivot row. Entries left of c are already zero, so start at c.
+            double inv = 1.0 / pr[c];
+            for (int j = c + 1; j < cols; j++) pr[j] *= inv;
+            pr[c] = 1.0;
+
+            // Eliminate the column from every other row.
+            for (int k = 0; k < rows; k++) {
+                if (k == r) continue;
+                double[] row = a[k];
+                double f = row[c];
+                if (f == 0.0) continue;
+                for (int j = c + 1; j < cols; j++) row[j] -= f * pr[j];
+                row[c] = 0.0;
+            }
+            r++;
         }
-        return A;
+        return new RREFMatrix(a);
     }
 
-    public Matrix removeNegativeZeros() {
-        return removeNegativeZeros(this);
+    public RREFMatrix clearTinyValues() {
+        return clearTinyValues(Double.MIN_NORMAL);
+    }
+
+    public RREFMatrix clearTinyValues(final double tol) {
+        double[][] a = getArrayCopy();
+        for (double[] row : a)
+            for (int j = 0; j < getColumnDimension(); j++)
+                row[j] = Math.abs(row[j]) <= tol ? 0.0 : row[j] + 0.0;
+        return new RREFMatrix(a);
     }
 }
