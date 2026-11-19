@@ -17,13 +17,13 @@
 import Jama.Matrix;
 
 public class RREFMatrix extends Matrix {
-    protected RREFMatrix(double[][] doubles) {
+    private RREFMatrix(double[][] doubles) {
         super(doubles);
     }
 
     //This method was made by Google AI
     public static RREFMatrix from(Matrix A) {
-        double[][] array = A.getArray();
+        double[][] array = A.getArrayCopy();
         int numRows = A.getRowDimension();
         int numCols = A.getColumnDimension();
         int lead = 0;

@@ -15,6 +15,7 @@
  */
 
 import Jama.Matrix;
+
 static Matrix getMatrixFromInput() {
     try {
         int rows = Integer.parseInt(IO.readln("How many rows does the matrix have?"));
@@ -31,4 +32,8 @@ static Matrix getMatrixFromInput() {
 
 void main() {
     RREFMatrix.from(getMatrixFromInput()).removeNegativeZeros().print(3, 2);
+    double a = -0.0;
+    IO.println(a);
+    a += 0.0;
+    IO.println(a);
 }
